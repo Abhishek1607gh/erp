@@ -1,0 +1,20 @@
+.container{
+    display: block;
+}
+
+.form{
+    display: flex;
+}
+.form input{
+    height:5vh;
+    margin-right: auto;
+    border-radius: 10px;
+    padding-left: 10px;
+}
+.text-box{
+    margin-right: auto;
+    margin-left: 20px;
+}
+.form-container{
+    margin-bottom: 100px;
+}
