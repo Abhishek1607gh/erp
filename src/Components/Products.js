@@ -3,19 +3,34 @@ import { useEffect, useState } from 'react';
 import './Product.css';
 function Products() {
     const [data, setData] = useState([])
+    const [name, setName] = useState('')
+    const [category, setCategory] = useState('')
+    const [stock, setStock] = useState('')
+    const [price, setPrice] = useState('')
     useEffect(() => {
         axios.get('http://localhost:3000/products')
-        .then(res =>setData(res.data))
+        .then(res => {
+            setData(res.data)
+        })
         .catch(er => console.log(er));
     })
+    const handleSubmit =(event) => {
+        event.preventDefault();
+        const id = data[data.length -1].id +1;
+        axios.post('http://localhost:3000/products', {id: id , name, category, stock, price})
+        .then(res => 
+            console.log(res)
+    )
+        .catch(er => console.log(er))
+    }
     return(
         <div className="container">
             <div className='form-co ntainer'>
-            <form className="form">
-            <div className='text-box'><input type="text" placeholder='Product Name' /></div>
-            <div className='text-box'>  <input type="text" placeholder='Category'/></div>
-            <div className='text-box'>  <input type="text" placeholder='Stock Quantity'/></div>
-            <div className='text-box'>   <input type="text"  placeholder='Price'/></div>
+            <form className="form" onSubmit={handleSubmit}>
+            <div className='text-box'><input type="text" placeholder='Product Name' onChange={e => setName(e.target.value)}/></div>
+            <div className='text-box'>  <input type="text" placeholder='Category' onChange={e => setCategory(e.target.value)}/></div>
+            <div className='text-box'>  <input type="text" placeholder='Stock Quantity'onChange={e => setStock(e.target.value)}/></div>
+            <div className='text-box'>   <input type="text"  placeholder='Price'onChange={e => setPrice(e.target.value)}/></div>
             <button>
                 Submit
             </button>
