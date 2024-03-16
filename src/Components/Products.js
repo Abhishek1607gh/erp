@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState,location} from 'react';
 import './Product.css';
 function Products() {
     const [data, setData] = useState([])
@@ -7,6 +7,11 @@ function Products() {
     const [category, setCategory] = useState('')
     const [stock, setStock] = useState('')
     const [price, setPrice] = useState('')
+    const [editId,setEditId] = useState(-1)
+    const [uname, usetName] = useState('')
+    const [ucategory, usetCategory] = useState('')
+    const [ustock, usetStock] = useState('')
+    const [uprice, usetPrice] = useState('')
     useEffect(() => {
         axios.get('http://localhost:3000/products')
         .then(res => {
@@ -16,16 +21,45 @@ function Products() {
     })
     const handleSubmit =(event) => {
         event.preventDefault();
-        const id = data[data.length -1].id +1;
+        const id = data.length +1;
         axios.post('http://localhost:3000/products', {id: id , name, category, stock, price})
-        .then(res => 
-            console.log(res)
-    )
+        .then(res => {
+           location.reload()
+        })
+        .catch(er => console.log(er))
+    }
+
+    const handleEdit = (id) =>{
+        axios.get('http://localhost:3000/products/' +id)
+        .then(res => {
+            console.log(res.data)
+            usetName(res.data.name)
+            usetCategory(res.data.category)
+            usetStock(res.data.stock)
+            usetPrice(res.data.price)
+        })
+        .catch(er => console.log(er));
+        setEditId(id)
+    }
+    const handleUpdate = () => {
+        axios.put('http://localhost:3000/products/' +editId, {id:editId,name: uname, category: ucategory, stock: ustock, price: uprice})
+        .then(res => {
+            console.log(res);
+            setEditId(-1)
+        })
+        .catch(er => console.log(er))
+    }
+
+    const handleDelete = (id) => {
+        axios.delete('http://localhost:3000/products/' +id)
+        .then(res => {
+            console.log(res);
+        })
         .catch(er => console.log(er))
     }
     return(
         <div className="container">
-            <div className='form-co ntainer'>
+            <div className='form-container'>
             <form className="form" onSubmit={handleSubmit}>
             <div className='text-box'><input type="text" placeholder='Product Name' onChange={e => setName(e.target.value)}/></div>
             <div className='text-box'>  <input type="text" placeholder='Category' onChange={e => setCategory(e.target.value)}/></div>
@@ -51,12 +85,29 @@ function Products() {
                 <tbody>
                    {
                     data.map((product, index) =>(
+                        product.id === editId ?
                         <tr key={index}>
-                            <td>{product.id}</td>
+                            <td typeof= 'text'>{product.id}</td>
+                            <td><input type='text' value={uname} onChange={e => usetName(e.target.value)}/></td>
+                            <td><input type='text' value={ucategory} onChange={e => usetCategory(e.target.value)}/></td>
+                            <td><input type='text' value={ustock} onChange={e => usetStock(e.target.value)}/></td>
+                            <td><input type='text' value={uprice} onChange={e => usetPrice(e.target.value)}/></td>
+                            <td>
+                                <button onClick={handleUpdate}> Update</button>
+                            </td>
+                        </tr>
+                        :
+
+                        <tr key={index}>
+                            <td typeof='text'>{product.id}</td>
                             <td>{product.name}</td>
                             <td>{product.category}</td>
                             <td>{product.stock}</td>
                             <td>{product.price}</td>
+                            <td>
+                                <button onClick={() => handleEdit(product.id)}>edit</button>
+                                <button onClick={() => handleDelete(product.id)}>delete</button>
+                            </td>
                         </tr>
                     ))
                    }
