@@ -1,0 +1,25 @@
+{
+  "orders": [
+    {
+      "orderId": "1",
+      "customerName": "rahul",
+      "orderDate": "04-03-2024",
+      "status": "shipped",
+      "id": "34c8"
+    },
+    {
+      "orderId": "2",
+      "customerName": "krishna",
+      "orderDate": "03-05-2024",
+      "status": "onDelivery",
+      "id": "9079"
+    },
+    {
+      "orderId": "3",
+      "customerName": "shreya",
+      "orderDate": "02-01-2024",
+      "status": "delivered",
+      "id": "e050"
+    }
+  ]
+}

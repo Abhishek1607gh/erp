@@ -1,17 +1,23 @@
 import "./Dashboard.css";
+import products from './products.json';
 function Dashboard() {
     return(
     <div  className="container">
         <div className="box-container"> 
             <div className="box">
             <h3>
-                Products
+                Products <br/>
+                <>
+                <div>
+                         </div>
+                </>
             </h3>
             </div>
 
             <div className="box">
             <h3>
-                Orders
+                Orders<br/>
+                3
             </h3>
             </div>
         </div>
